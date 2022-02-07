@@ -1,16 +1,39 @@
-# This is a sample Python script.
+# Задача: реализовать игру в загадки
+#  Требования:
+# Программа выводить в консоль текст загадки и ждать ввода пользователя
+# Программа после ввода пользователя ответа должна вывести в консоль результат: правильный ли ответ дал пользователь
+# Загадок должно быть 10, тематика вопросов должна быть по первому занятию
+# Дополнительные требования (со звездочкой или сложные, необязательно для выполнения):
+# Программа должна в конце игры сказать, сколько ответов дал пользователь: сколько из них было верных
+# Программа должна не учитывать регистр ответа: "Python" и "python" оба должны быть правильным ответом на вопрос "Какой язык мы учим?"
+# Форма сдачи работы: нужно создать gist на сайте https://gist.github.com/ и скинуть ссылку на него в канал #homework4, подсматривать
+# чужие работы - можно и нужно. Правило проверки: если вы скинули задание в #homework4 - я его проверю, без сроков давности или порядка
+# исполнения. Но лучше не затягивать.
+import random
+count = 5
+right_answer = 0
+answers = tuple()
+questions = tuple()
+with open('riddle.txt', 'r', encoding='utf-8') as f: # читаем файл с загадками и ответами
+    if f.readable():
+       #print('This file is readable')
+        for string in f:
+            if string.count("("):
+                answers += (string.partition(')')[0].lstrip('(').lower(),) #  удаляю из строки скобки, привожу к нижнему регистру и добавляю в кортеж
+                #print(answers)
+            elif not string.isspace(): # проверяю не пуста ли строка
+                questions += (string.partition('\n')[0],) # создаю кортеж вопросов
+                #print(questions)
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
+while count:
+    count -= 1
+    rnd = random.randint(1, len(questions)) # случайный номер загадки
+    user_answer = input(f'Отгадай загадку: {questions[rnd]} \n')
+    if user_answer.lower() == answers[rnd]:
+        print('Отлично, правильный ответ!')
+        right_answer += 1
+    else:
+        print ('Эх, не повезло.')
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-    print("hello world")
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(f'Вы отгадали {right_answer} загадок из 5')
